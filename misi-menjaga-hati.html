@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misi Menjaga Hati — PAI Kelas XII</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EFE7D8; --surface:#FFFDF8; --surface-2:#F7F0E2; --border:#DCD0B8;
+  --ink:#241C12; --muted:#6B6152; --muted-2:#8A8065;
+  --rose:#A8433A; --rose-ink:#7c2f28; --teal:#2F6F62; --teal-ink:#1f4a41; --gold:#A9761F; --gold-soft:#E7D9B0;
+  --danger:#A8433A; --success:#2F6F62;
+  --shadow: 0 10px 30px -12px rgba(36,28,18,0.25);
+  --radius: 14px;
+  color-scheme: light;
+}
+[data-theme="dark"]{
+  --bg:#101A2C; --surface:#182338; --surface-2:#1E2B45; --border:#31405E;
+  --ink:#ECE6D6; --muted:#9FAAC2; --muted-2:#7C89A6;
+  --rose:#D97D72; --rose-ink:#F0A79D; --teal:#5FB39F; --teal-ink:#8FD1C0; --gold:#D8B76A; --gold-soft:#3A2F17;
+  --danger:#D97D72; --success:#5FB39F;
+  --shadow: 0 10px 34px -10px rgba(0,0,0,0.55);
+  color-scheme: dark;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:'Plus Jakarta Sans', sans-serif;
+  line-height:1.55;
+  transition:background .35s ease, color .35s ease;
+  min-height:100vh;
+}
+h1,h2,h3,h4{font-family:'Fraunces', serif; font-weight:600; margin:0 0 .4em; letter-spacing:-.01em;}
+p{margin:0 0 1em;}
+.arabic{font-family:'Amiri', serif; direction:rtl; text-align:right; font-size:1.5rem; line-height:2.1; color:var(--ink);}
+button{font-family:inherit; cursor:pointer;}
+::selection{background:var(--gold-soft); color:var(--ink);}
+
+/* ---------- START SCREEN ---------- */
+#screen-start{
+  min-height:100vh; display:flex; align-items:center; justify-content:center; padding:32px 20px;
+  background:
+    radial-gradient(ellipse at 20% 15%, color-mix(in srgb, var(--rose) 14%, transparent), transparent 55%),
+    radial-gradient(ellipse at 85% 85%, color-mix(in srgb, var(--teal) 14%, transparent), transparent 55%),
+    var(--bg);
+}
+.start-card{
+  max-width:480px; width:100%; background:var(--surface); border:1px solid var(--border);
+  border-radius:20px; padding:40px 34px; box-shadow:var(--shadow); text-align:center;
+  position:relative;
+}
+.start-emblem{width:64px;height:64px;margin:0 auto 18px;}
+.start-kicker{color:var(--gold); font-size:.8rem; letter-spacing:.06em; margin-bottom:6px; font-weight:600;}
+.start-card h1{font-size:1.9rem; margin-bottom:.2em;}
+.start-sub{color:var(--muted); font-size:.98rem; margin-bottom:26px;}
+.field{text-align:left; margin-bottom:16px;}
+.field label{display:block; font-size:.82rem; color:var(--muted); margin-bottom:6px; font-weight:600;}
+.field input{
+  width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--border);
+  background:var(--surface-2); color:var(--ink); font-size:1rem; font-family:inherit;
+}
+.field input:focus{outline:2px solid var(--rose); outline-offset:1px;}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:13px 26px; border-radius:999px; border:none; font-weight:700; font-size:.98rem;
+  background:var(--rose); color:#fff; box-shadow:0 8px 20px -8px color-mix(in srgb, var(--rose) 70%, transparent);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(0);}
+.btn.secondary{background:transparent; color:var(--ink); border:1.5px solid var(--border); box-shadow:none;}
+.btn.ghost{background:transparent; color:var(--rose); box-shadow:none; padding:10px 16px;}
+.btn.teal{background:var(--teal); box-shadow:0 8px 20px -8px color-mix(in srgb, var(--teal) 70%, transparent);}
+.btn:disabled{opacity:.45; cursor:not-allowed; transform:none;}
+.start-cta{width:100%; margin-top:8px;}
+
+/* ---------- APP SHELL ---------- */
+#app{display:none;}
+#app.active{display:block;}
+.topbar{
+  position:sticky; top:0; z-index:40; background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--border);
+  padding:12px 20px; display:flex; align-items:center; gap:14px;
+}
+.brand{display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:600; font-size:1.02rem; flex:1; min-width:0;}
+.brand small{display:block; font-family:'Plus Jakarta Sans',sans-serif; font-weight:500; font-size:.72rem; color:var(--muted);}
+.heart-meter{position:relative; width:34px; height:30px; flex-shrink:0;}
+.heart-meter svg{width:100%; height:100%; display:block;}
+.topbar-actions{display:flex; align-items:center; gap:8px;}
+.icon-btn{
+  width:38px; height:38px; border-radius:50%; border:1px solid var(--border); background:var(--surface);
+  display:flex; align-items:center; justify-content:center; color:var(--ink); font-size:1rem;
+}
+.progress-track{height:5px; background:var(--surface-2); position:relative;}
+.progress-fill{height:100%; background:linear-gradient(90deg, var(--rose), var(--gold)); width:0%; transition:width .4s ease;}
+
+.layout{display:flex; max-width:1180px; margin:0 auto;}
+.journey{
+  width:230px; flex-shrink:0; padding:26px 14px 60px 20px; position:sticky; top:57px; align-self:flex-start;
+  max-height:calc(100vh - 57px); overflow-y:auto;
+}
+.journey-item{
+  display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:10px; margin-bottom:2px;
+  color:var(--muted); font-size:.85rem; font-weight:600; border:none; background:transparent; width:100%; text-align:left;
+  position:relative;
+}
+.journey-item .dot{width:9px; height:9px; border-radius:50%; background:var(--border); flex-shrink:0; transition:background .2s;}
+.journey-item.done .dot{background:var(--success);}
+.journey-item.active{color:var(--ink); background:var(--surface-2);}
+.journey-item.active .dot{background:var(--rose); box-shadow:0 0 0 4px color-mix(in srgb, var(--rose) 18%, transparent);}
+.journey-item:hover{color:var(--ink);}
+.journey-line{position:absolute; left:24px; top:0; bottom:0; width:1px; background:var(--border); z-index:-1;}
+
+.stepper-mobile{display:none;}
+
+main.content{flex:1; min-width:0; padding:28px 26px 90px;}
+.step{display:none; animation:fadein .35s ease;}
+.step.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+.eyebrow{color:var(--gold); font-weight:700; font-size:.78rem; margin-bottom:8px;}
+.step-head{max-width:680px; margin-bottom:26px;}
+.step-head h2{font-size:1.7rem;}
+.step-head p{color:var(--muted); font-size:1rem;}
+
+.card{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:22px 22px; box-shadow:var(--shadow); margin-bottom:18px;}
+.grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+@media (max-width:780px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+
+.materi-block{border-left:3px solid var(--rose); padding-left:18px; margin-bottom:30px;}
+.materi-block h3{font-size:1.25rem;}
+.tag-row{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 14px;}
+.tag{font-size:.78rem; font-weight:700; padding:4px 10px; border-radius:999px; background:var(--surface-2); color:var(--muted); border:1px solid var(--border);}
+ul.ciri{margin:0; padding-left:1.1em; color:var(--ink);}
+ul.ciri li{margin-bottom:5px;}
+
+.dalil-box{
+  border:1.5px solid var(--gold-soft); border-radius:10px; padding:20px; margin:14px 0;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--gold) 6%, transparent), transparent);
+  position:relative;
+}
+.dalil-box::before{content:"﴾"; position:absolute; top:10px; left:14px; font-family:'Amiri',serif; color:var(--gold); font-size:1.3rem; opacity:.7;}
+.dalil-terjemah{font-style:italic; color:var(--ink); margin:12px 0 6px;}
+.dalil-sumber{font-size:.82rem; color:var(--muted); font-weight:600;}
+.note-box{background:var(--surface-2); border-left:3px solid var(--teal); border-radius:8px; padding:14px 16px; font-size:.93rem; color:var(--ink);}
+
+table.compare{width:100%; border-collapse:collapse; font-size:.92rem;}
+table.compare th, table.compare td{text-align:left; padding:12px 10px; border-bottom:1px solid var(--border); vertical-align:top;}
+table.compare th{color:var(--muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; font-weight:700;}
+table.compare td strong{color:var(--rose);}
+
+.chain{display:flex; flex-direction:column; align-items:flex-start; gap:2px; font-size:.92rem; margin:12px 0;}
+.chain .link{background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:9px 14px; width:100%;}
+.chain .arrow{color:var(--muted-2); padding-left:14px; font-size:.85rem;}
+
+.keys-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+.keys-list li{display:flex; gap:12px; align-items:flex-start; background:var(--surface-2); border-radius:10px; padding:13px 15px;}
+.keys-list .num{font-family:'Fraunces',serif; font-weight:700; color:var(--rose); font-size:1.1rem; width:22px; flex-shrink:0;}
+
+/* activity commons */
+.situation-card{margin-bottom:16px;}
+.situation-text{font-size:1.02rem; margin-bottom:14px;}
+.opt-list{display:flex; flex-direction:column; gap:8px;}
+.opt{
+  display:flex; align-items:center; gap:10px; text-align:left; padding:11px 14px; border-radius:10px;
+  border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:.94rem; width:100%;
+}
+.opt .key{font-weight:700; color:var(--muted); width:18px; flex-shrink:0;}
+.opt:hover{border-color:var(--rose);}
+.opt.correct{border-color:var(--success); background:color-mix(in srgb, var(--success) 14%, var(--surface-2));}
+.opt.wrong{border-color:var(--danger); background:color-mix(in srgb, var(--danger) 14%, var(--surface-2));}
+.opt:disabled{cursor:default;}
+.feedback{margin-top:12px; padding:13px 15px; border-radius:10px; font-size:.92rem; display:none;}
+.feedback.show{display:block;}
+.feedback.ok{background:color-mix(in srgb, var(--success) 12%, transparent); border:1px solid var(--success); color:var(--ink);}
+.feedback.bad{background:color-mix(in srgb, var(--danger) 12%, transparent); border:1px solid var(--danger); color:var(--ink);}
+
+.case-grid{display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:20px;}
+.case-card{border:1.5px solid var(--border); background:var(--surface-2); border-radius:12px; padding:16px 18px;}
+.case-card.solved{border-color:var(--success);}
+.case-card p{margin-bottom:10px; font-size:.95rem;}
+.cat-btns{display:flex; gap:7px; flex-wrap:wrap;}
+.cat-btn{padding:7px 12px; border-radius:999px; border:1.5px solid var(--border); background:var(--surface); color:var(--ink); font-size:.82rem; font-weight:600;}
+.cat-btn.pick-correct{border-color:var(--success); background:color-mix(in srgb, var(--success) 16%, var(--surface));}
+.cat-btn.pick-wrong{border-color:var(--danger); background:color-mix(in srgb, var(--danger) 16%, var(--surface));}
+.case-fb{margin-top:10px; font-size:.86rem; color:var(--muted); display:none; border-top:1px dashed var(--border); padding-top:10px;}
+.case-fb.show{display:block;}
+.case-fb b{color:var(--ink);}
+.detective-summary{text-align:center; font-weight:700; margin-top:4px;}
+
+.dalil-match-card{margin-bottom:16px;}
+.dalil-match-card .pick-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;}
+.reveal{display:none; margin-top:12px; padding:13px 15px; background:var(--surface-2); border-radius:10px; font-size:.9rem;}
+.reveal.show{display:block;}
+
+.scenario-nav{display:flex; gap:8px; margin-bottom:18px;}
+.scenario-tab{padding:8px 14px; border-radius:999px; border:1.5px solid var(--border); background:var(--surface); color:var(--muted); font-size:.85rem; font-weight:700;}
+.scenario-tab.active{border-color:var(--rose); color:var(--rose);}
+.scenario-tab.done{color:var(--success); border-color:var(--success);}
+.consequence-box{margin-top:14px; padding:14px 16px; border-radius:10px; font-size:.92rem; display:none;}
+.consequence-box.show{display:block;}
+.consequence-box.good{background:color-mix(in srgb, var(--success) 12%, transparent); border:1px solid var(--success);}
+.consequence-box.notgood{background:color-mix(in srgb, var(--danger) 12%, transparent); border:1px solid var(--danger);}
+.followup{margin-top:16px; display:none;}
+.followup.show{display:block;}
+.followup label{display:block; font-size:.85rem; font-weight:600; color:var(--muted); margin:12px 0 6px;}
+textarea{
+  width:100%; padding:12px 14px; border-radius:10px; border:1px solid var(--border); background:var(--surface-2);
+  color:var(--ink); font-family:inherit; font-size:.94rem; resize:vertical; min-height:70px;
+}
+textarea:focus, input:focus{outline:2px solid var(--rose); outline-offset:1px;}
+
+.radar-row{padding:14px 0; border-bottom:1px solid var(--border);}
+.radar-row:last-child{border-bottom:none;}
+.radar-row p{margin-bottom:10px; font-size:.95rem;}
+.radar-opts{display:flex; gap:8px; flex-wrap:wrap;}
+.radar-opt{padding:8px 14px; border-radius:999px; border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:.85rem; font-weight:600;}
+.radar-opt.active{border-color:var(--rose); background:color-mix(in srgb, var(--rose) 16%, var(--surface-2));}
+.radar-result{display:none; margin-top:10px;}
+.radar-result.show{display:block;}
+.radar-cols{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media (max-width:600px){.radar-cols{grid-template-columns:1fr;}}
+.radar-col{background:var(--surface-2); border-radius:10px; padding:16px;}
+.radar-col h4{font-size:.92rem;}
+.radar-col ul{margin:0; padding-left:1.1em; font-size:.88rem;}
+
+.flip-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+@media (max-width:900px){.flip-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.flip-grid{grid-template-columns:1fr;}}
+.flip-card{perspective:1000px; height:150px;}
+.flip-inner{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d; cursor:pointer;}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-face{position:absolute; inset:0; backface-visibility:hidden; border-radius:12px; padding:14px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:.86rem; font-weight:600;}
+.flip-front{background:color-mix(in srgb, var(--danger) 10%, var(--surface-2)); border:1.5px solid var(--danger); color:var(--ink);}
+.flip-back{background:color-mix(in srgb, var(--success) 12%, var(--surface-2)); border:1.5px solid var(--success); color:var(--ink); transform:rotateY(180deg);}
+
+.commit-list{display:flex; flex-direction:column; gap:9px; margin-bottom:18px;}
+.commit-item{display:flex; align-items:flex-start; gap:11px; padding:12px 14px; border-radius:10px; border:1.5px solid var(--border); background:var(--surface-2); font-size:.93rem;}
+.commit-item input{margin-top:3px; width:16px; height:16px; accent-color:var(--rose);}
+.commit-counter{font-size:.85rem; color:var(--muted); margin-bottom:10px;}
+
+.reflect-q{margin-bottom:20px;}
+.reflect-q label{display:block; font-weight:600; margin-bottom:8px; font-size:.95rem;}
+
+.quiz-progress{font-size:.85rem; color:var(--muted); margin-bottom:10px; font-weight:600;}
+.quiz-explain{margin-top:14px; padding:14px 16px; border-radius:10px; background:var(--surface-2); font-size:.9rem; display:none;}
+.quiz-explain.show{display:block;}
+.quiz-goal{font-size:.78rem; color:var(--gold); font-weight:700; margin-top:8px;}
+
+.step-nav{display:flex; justify-content:space-between; margin-top:26px; gap:10px;}
+
+/* finish */
+.finish-wrap{text-align:center; max-width:600px; margin:0 auto;}
+.finish-quote{font-family:'Fraunces',serif; font-size:1.3rem; font-style:italic; color:var(--rose); margin:26px 0; line-height:1.5;}
+.finish-lists{text-align:left; display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:22px 0;}
+@media (max-width:600px){.finish-lists{grid-template-columns:1fr;}}
+.finish-actions{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:24px;}
+
+#confetti-canvas{position:fixed; inset:0; pointer-events:none; z-index:999;}
+
+@media (max-width:900px){
+  .journey{display:none;}
+  .stepper-mobile{
+    display:flex; gap:6px; overflow-x:auto; padding:10px 16px; border-bottom:1px solid var(--border);
+    background:var(--surface); position:sticky; top:57px; z-index:30;
+  }
+  .stepper-mobile button{
+    flex-shrink:0; padding:7px 13px; border-radius:999px; border:1.5px solid var(--border); background:var(--surface-2);
+    color:var(--muted); font-size:.78rem; font-weight:700;
+  }
+  .stepper-mobile button.active{border-color:var(--rose); color:var(--rose);}
+  .stepper-mobile button.done{color:var(--success); border-color:var(--success);}
+  main.content{padding:22px 16px 80px;}
+  .step-head h2{font-size:1.45rem;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- START SCREEN -->
+<div id="screen-start">
+  <div class="start-card">
+    <svg class="start-emblem" viewBox="0 0 64 64" fill="none">
+      <path d="M32 54C32 54 10 40.5 10 24.5C10 16.5 16.5 11 23.5 11C27.3 11 30.4 13 32 15.8C33.6 13 36.7 11 40.5 11C47.5 11 54 16.5 54 24.5C54 40.5 32 54 32 54Z" stroke="var(--rose)" stroke-width="2.2"/>
+      <path d="M17 26L24 26L27 19L32 33L36 24L39 26L47 26" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="start-kicker">MEDIA PEMBELAJARAN PAI · KELAS XII</div>
+    <h1>Misi Menjaga Hati</h1>
+    <p class="start-sub">Menjauhi sifat munafik, keras hati, dan keras kepala agar hati tetap bersih. Sebuah perjalanan memahami, mengalami, merenung, dan berkomitmen memperbaiki diri.</p>
+    <div class="field">
+      <label for="inp-nama">Nama lengkap</label>
+      <input type="text" id="inp-nama" placeholder="Tulis namamu">
+    </div>
+    <div class="field">
+      <label for="inp-kelas">Kelas</label>
+      <input type="text" id="inp-kelas" placeholder="Contoh: XII IPA 2">
+    </div>
+    <button class="btn start-cta" id="btn-start">Mulai Misi</button>
+    <p style="margin-top:14px; font-size:.78rem; color:var(--muted);">Progresmu tersimpan otomatis di perangkat ini.</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="topbar">
+    <div class="brand">
+      <div class="heart-meter">
+        <svg viewBox="0 0 34 30" fill="none">
+          <path d="M17 27C17 27 3 18.5 3 9.5C3 4.9 6.7 2 10.5 2C13 2 15 3.3 17 5.8C19 3.3 21 2 23.5 2C27.3 2 31 4.9 31 9.5C31 18.5 17 27 17 27Z" stroke="var(--border)" stroke-width="1.6"/>
+          <clipPath id="heartclip"><path d="M17 27C17 27 3 18.5 3 9.5C3 4.9 6.7 2 10.5 2C13 2 15 3.3 17 5.8C19 3.3 21 2 23.5 2C27.3 2 31 4.9 31 9.5C31 18.5 17 27 17 27Z"/></clipPath>
+          <rect id="heart-fill-rect" x="0" y="27" width="34" height="0" fill="var(--rose)" clip-path="url(#heartclip)"/>
+        </svg>
+      </div>
+      <div>
+        Misi Menjaga Hati
+        <small id="brand-sub">Kelas XII · PAI</small>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="btn-sound" title="Suara">🔊</button>
+      <button class="icon-btn" id="btn-theme" title="Mode gelap/terang">🌙</button>
+    </div>
+  </div>
+
+  <div class="stepper-mobile" id="stepper-mobile"></div>
+
+  <div class="layout">
+    <nav class="journey" id="journey"></nav>
+
+    <main class="content">
+
+      <!-- STEP: kenali-masalah -->
+      <section class="step" data-step="kenali-masalah">
+        <div class="step-head">
+          <div class="eyebrow">CHECKPOINT 1</div>
+          <h2>Kenali Masalah</h2>
+          <p>Hati ibarat cermin. Bila terus dikotori kebiasaan buruk, ia akan buram dan sulit melihat kebenaran. Misi ini mengajakmu mengenali tiga sifat yang paling sering mengotori hati.</p>
+        </div>
+        <div class="card">
+          <h3 style="font-size:1.05rem;">Tujuan Perjalananmu</h3>
+          <ul class="ciri">
+            <li>Menjelaskan pengertian munafik, keras hati, dan keras kepala.</li>
+            <li>Mengidentifikasi dalil-dalil tentang ketiga sifat tersebut.</li>
+            <li>Mengklasifikasi ciri-ciri orang yang menunjukkan perilaku itu.</li>
+            <li>Menghindari dampak dari perilaku tersebut.</li>
+            <li>Mengambil hikmah dari dampaknya bagi diri dan orang lain.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="font-size:1.05rem;">Aktivitas 1 — Kenali Situasinya</h3>
+          <p style="color:var(--muted); font-size:.9rem;">Bacalah tiap situasi, lalu kenali sikap apa yang ditunjukkan di dalamnya.</p>
+          <div id="situation-list"></div>
+        </div>
+        <div class="step-nav"><span></span><button class="btn" data-next="materi">Lanjut ke Materi →</button></div>
+      </section>
+
+      <!-- STEP: materi -->
+      <section class="step" data-step="materi">
+        <div class="step-head">
+          <div class="eyebrow">CHECKPOINT 2</div>
+          <h2>Pelajari Materi</h2>
+          <p>Tiga sifat yang perlu kamu kenali agar bisa dihindari.</p>
+        </div>
+
+        <div class="materi-block">
+          <h3>1. Munafik</h3>
+          <p>Sikap tidak sesuai antara apa yang ditampakkan dengan apa yang sebenarnya ada dalam hati atau perbuatan. Kemunafikan tampak ketika seseorang berkata atau menunjukkan sesuatu yang berbeda dari kenyataan dirinya.</p>
+          <div class="tag-row"><span class="tag">Berdusta ketika berbicara</span><span class="tag">Mengingkari janji</span><span class="tag">Berkhianat ketika diberi amanah</span></div>
+          <div class="dalil-box">
+            <p class="arabic">آيَةُ الْمُنَافِقِ ثَلَاثٌ: إِذَا حَدَّثَ كَذَبَ، وَإِذَا وَعَدَ أَخْلَفَ، وَإِذَا اؤْتُمِنَ خَانَ</p>
+            <p class="dalil-terjemah">"Tanda orang munafik ada tiga: apabila berbicara ia berdusta, apabila berjanji ia mengingkari, dan apabila diberi amanah ia berkhianat."</p>
+            <p class="dalil-sumber">HR. Bukhari dan Muslim</p>
+          </div>
+          <div class="note-box">Melakukan salah satu perilaku ini tidak otomatis berarti kita boleh memberi label seseorang sebagai "orang munafik". Materi ini mengajak kita mengenali dan menghindari <em>perilakunya</em>, bukan menghakimi <em>pribadinya</em>.</div>
+        </div>
+
+        <div class="materi-block">
+          <h3>2. Keras Hati</h3>
+          <p>Keadaan ketika seseorang sulit menerima kebenaran, nasihat, atau kebaikan sehingga hatinya tidak mudah tersentuh untuk berubah.</p>
+          <ul class="ciri">
+            <li>Sulit menerima nasihat</li>
+            <li>Tidak mudah tersentuh oleh kebaikan</li>
+            <li>Tidak mau mengakui kesalahan</li>
+            <li>Tidak peduli terhadap akibat buruk dari perbuatannya</li>
+            <li>Terus melakukan kesalahan meski telah mengetahui kebenarannya</li>
+          </ul>
+          <div class="dalil-box">
+            <p class="arabic">أَلَمْ يَأْنِ لِلَّذِينَ آمَنُوا أَنْ تَخْشَعَ قُلُوبُهُمْ لِذِكْرِ اللَّهِ وَمَا نَزَلَ مِنَ الْحَقِّ</p>
+            <p class="dalil-terjemah">"Belum tibakah waktunya bagi orang-orang yang beriman, untuk secara khusyuk mengingat Allah dan mematuhi kebenaran yang telah diturunkan (kepada mereka)?"</p>
+            <p class="dalil-sumber">QS. Al-Hadid: 16</p>
+          </div>
+          <div class="note-box">Pesan utama: hati orang beriman harus terbuka terhadap zikir, kebenaran, nasihat, dan perbaikan diri.</div>
+        </div>
+
+        <div class="materi-block">
+          <h3>3. Keras Kepala</h3>
+          <p>Sikap mempertahankan pendapat atau keinginan sendiri dan sulit menerima nasihat atau kebenaran meskipun sudah mendapatkan penjelasan.</p>
+          <ul class="ciri">
+            <li>Merasa pendapat sendiri selalu benar</li>
+            <li>Tidak mau mendengarkan pendapat orang lain</li>
+            <li>Sulit menerima kritik</li>
+            <li>Menolak nasihat karena ego atau gengsi</li>
+            <li>Tetap mempertahankan pendapat meski mengetahui dirinya keliru</li>
+          </ul>
+          <div class="dalil-box">
+            <p class="arabic">وَلَا تُصَعِّرْ خَدَّكَ لِلنَّاسِ وَلَا تَمْشِ فِي الْأَرْضِ مَرَحًا ۖ إِنَّ اللَّهَ لَا يُحِبُّ كُلَّ مُخْتَالٍ فَخُورٍ</p>
+            <p class="dalil-terjemah">"Janganlah memalingkan wajahmu dari manusia (karena sombong) dan janganlah berjalan di bumi dengan angkuh. Sesungguhnya Allah tidak menyukai setiap orang yang sombong lagi membanggakan diri."</p>
+            <p class="dalil-sumber">QS. Luqman: 18</p>
+          </div>
+          <div class="note-box">Ayat ini berkaitan dengan larangan kesombongan dan sikap merasa diri lebih tinggi — sikap yang dapat menghalangi seseorang menerima kebenaran dan nasihat.</div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:1.05rem;">Perbedaan Ketiganya</h3>
+          <table class="compare">
+            <thead><tr><th>Perilaku</th><th>Inti Masalah</th><th>Contoh</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Munafik</strong></td><td>Tidak sesuai antara perkataan/perbuatan yang ditampakkan dengan kenyataan</td><td>Berjanji tetapi sejak awal tidak berniat menepati</td></tr>
+              <tr><td><strong>Keras Hati</strong></td><td>Sulit menerima kebenaran/nasihat dengan hati</td><td>Sudah tahu salah tetapi tidak tergerak memperbaiki diri</td></tr>
+              <tr><td><strong>Keras Kepala</strong></td><td>Mempertahankan pendapat/kehendak sendiri</td><td>Sudah diberi alasan yang benar tetapi tetap menolak karena gengsi</td></tr>
+            </tbody>
+          </table>
+          <div class="note-box" style="margin-top:14px;">Ketiganya dapat merusak hubungan dengan Allah, diri sendiri, dan orang lain jika dibiarkan.</div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:1.05rem;">Dampak Perilaku</h3>
+          <div class="grid-3">
+            <div>
+              <p style="font-weight:700; color:var(--rose); margin-bottom:8px;">Munafik</p>
+              <div class="chain">
+                <div class="link">Kebohongan / khianat</div><div class="arrow">↓</div>
+                <div class="link">Kepercayaan orang lain hilang</div><div class="arrow">↓</div>
+                <div class="link">Hubungan rusak</div><div class="arrow">↓</div>
+                <div class="link">Sulit dipercaya</div>
+              </div>
+            </div>
+            <div>
+              <p style="font-weight:700; color:var(--rose); margin-bottom:8px;">Keras Hati</p>
+              <div class="chain">
+                <div class="link">Menolak nasihat</div><div class="arrow">↓</div>
+                <div class="link">Sulit introspeksi</div><div class="arrow">↓</div>
+                <div class="link">Kesalahan berulang</div><div class="arrow">↓</div>
+                <div class="link">Sulit berkembang</div>
+              </div>
+            </div>
+            <div>
+              <p style="font-weight:700; color:var(--rose); margin-bottom:8px;">Keras Kepala</p>
+              <div class="chain">
+                <div class="link">Memaksakan kehendak</div><div class="arrow">↓</div>
+                <div class="link">Konflik</div><div class="arrow">↓</div>
+                <div class="link">Sulit bekerja sama</div><div class="arrow">↓</div>
+                <div class="link">Hubungan terganggu</div>
+              </div>
+            </div>
+          </div>
+          <div class="note-box" style="margin-top:14px;">Dampak perilaku tercela tidak hanya dirasakan oleh pelaku, tetapi juga oleh orang-orang di sekitarnya.</div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:1.05rem;">5 Kunci Menjaga Hati</h3>
+          <ul class="keys-list">
+            <li><span class="num">1</span><div><strong>Jujur</strong> — sesuaikan perkataan dengan kenyataan.</div></li>
+            <li><span class="num">2</span><div><strong>Tepati janji</strong> — jangan mudah berjanji jika tidak mampu menepatinya.</div></li>
+            <li><span class="num">3</span><div><strong>Terima nasihat</strong> — dengarkan nasihat dengan hati terbuka.</div></li>
+            <li><span class="num">4</span><div><strong>Berani mengakui kesalahan</strong> — kesalahan bukan alasan untuk mempertahankan ego.</div></li>
+            <li><span class="num">5</span><div><strong>Muhasabah</strong> — biasakan mengevaluasi diri sebelum menilai orang lain.</div></li>
+          </ul>
+          <div class="note-box" style="margin-top:14px;">Hati yang bersih bukan berarti tidak pernah salah, tetapi mau menyadari kesalahan dan berusaha memperbaikinya.</div>
+        </div>
+
+        <div class="step-nav"><button class="btn secondary" data-prev="kenali-masalah">← Kembali</button><button class="btn" data-next="dalil">Lanjut ke Jejak Dalil →</button></div>
+      </section>
+
+      <!-- STEP: dalil -->
+      <section class="step" data-step="dalil">
+        <div class="step-head">
+          <div class="eyebrow">CHECKPOINT 3</div>
+          <h2>Temukan Dalil — Jejak Dalil</h2>
+          <p>Pasangkan setiap dalil dengan perilaku yang dijelaskannya. Bacalah maknanya baik-baik sebelum menjawab.</p>
+        </div>
+        <div id="dalil-match-list"></div>
+        <div class="card" id="dalil-conclusion" style="display:none;">
+          <h3 style="font-size:1.05rem;">Kesimpulan</h3>
+          <p>Hadis tentang tanda munafik mengingatkan kita menjaga kejujuran, janji, dan amanah. QS. Al-Hadid: 16 mengajak hati tetap terbuka pada zikir dan kebenaran agar tidak keras. QS. Luqman: 18 melarang kesombongan yang membuat seseorang keras kepala menolak nasihat. Ketiganya bermuara pada satu hal: menjaga hati tetap lapang menerima kebenaran.</p>
+        </div>
+        <div class="step-nav"><button class="btn secondary" data-prev="materi">← Kembali</button><button class="btn" data-next="detektif">Lanjut ke Detektif Sikap →</button></div>
+      </section>
+
+      <!-- STEP: detektif -->
+      <section class="step" data-step="detektif">
+        <div class="step-head">
+          <div class="eyebrow">CHECKPOINT 4</div>
+          <h2>Detektif Sikap</h2>
+          <p>Baca tiap kasus dengan teliti, lalu tentukan kategorinya. Beberapa kasus mirip — perhatikan kata kuncinya.</p>
+        </div>
+        <div class="card">
+          <div id="case-progress" class="quiz-progress">0 dari 12 kasus terpecahkan</div>
+          <div class="case-grid" id="case-grid"></div>
+        </div>
+        <div class="step-nav"><button class="btn secondary" data-prev="dalil">← Kembali</button><button class="btn" data-next="pilihan">Lanjut ke Pilihanmu →</button></div>
+      </section>
+
+      <!-- STEP: pilihan -->
+      <section class="step" data-step="pilihan">
+        <div class="step-head">
+          <div class="eyebrow">CHECKPOINT 5</div>
+          <h2>Pilihanmu, Konsekuensimu</h2>
+          <p>Setiap pilihan punya akibat. Pilih dengan sadar, lalu renungkan hasilnya.</p>
+        </div>
+        <div class="scenario-nav" id="scenario-nav"></div>
+        <div class="card" id="scenario-body"></div>
+        <div class="step-nav"><button class="btn secondary" data-prev="detektif">← Kembali</button><button class="btn" data-next="radar">Lanjut ke Radar Hati →</button></div>
+      </section>
+
+      <!-- STEP: radar -->
+      <section class="step" data-step="radar">
+        <div class="step-head">
+          <div class="eyebrow">CHECKPOINT 6</div>
+          <h2>Radar Hati</h2>
+          <p>Jawablah sejujur-jujurnya. Ini bukan penilaian terhadap siapa dirimu, tetapi cermin untuk melihat apa yang perlu diperbaiki.</p>
+        </div>
+        <div class="card">
+          <div id="radar-list"></div>
+          <div class="radar-result" id="radar-result">
+            <div class="radar-cols">
+              <div class="radar-col"><h4>🌿 Kebiasaan yang sudah baik</h4><ul id="radar-good"></ul></div>
+              <div class="radar-col"><h4>🔧 Kebiasaan yang perlu diperbaiki</h4><ul id="radar-bad"></ul></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="font-size:1.05rem;">Aktivitas 6 — Putar Balik Sikap</h3>
+          <p style="color:var(--muted); font-size:.9rem;">Sentuh tiap kartu untuk melihat sikap sebaliknya yang lebih baik.</p>
+          <div class="flip-grid" id="flip-grid"></div>
+        </div>
+        <div class="step-nav"><button class="btn secondary" data-prev="pilihan">← Kembali</button><button class="btn" data-next="tantangan">Lanjut ke Tantangan 7 Hari →</button></div>
+      </section>
+
+      <!-- STEP: tantangan -->
+      <section class="step" data-step="tantangan">
+        <div class="step-head">
+          <div class="eyebrow">CHECKPOINT 7</div>
+          <h2>Tantangan 7 Hari — Aku Mau Berubah</h2>
+          <p>Pilih minimal 3 komitmen yang ingin kamu jalankan minggu ini.</p>
+        </div>
+        <div class="card">
+          <div class="commit-counter" id="commit-counter">0 komitmen dipilih (minimal 3)</div>
+          <div class="commit-list" id="commit-list"></div>
+          <label style="display:block; font-weight:600; margin-bottom:8px; font-size:.95rem;">"Mulai hari ini saya akan..."</label>
+          <textarea id="commit-free" placeholder="Tulis komitmenmu dengan kata-katamu sendiri..."></textarea>
+        </div>
+        <div class="step-nav"><button class="btn secondary" data-prev="radar">← Kembali</button><button class="btn" data-next="refleksi">Lanjut ke Refleksi →</button></div>
+      </section>
+
+      <!-- STEP: refleksi -->
+      <section class="step" data-step="refleksi">
+        <div class="step-head">
+          <div class="eyebrow">CHECKPOINT 8</div>
+          <h2>Refleksi — Cermin Hati</h2>
+          <p>Tidak ada jawaban benar atau salah di sini. Tulis dengan jujur.</p>
+        </div>
+        <div class="card" id="reflect-list"></div>
+        <div class="step-nav"><button class="btn secondary" data-prev="tantangan">← Kembali</button><button class="btn" data-next="evaluasi">Lanjut ke Evaluasi →</button></div>
+      </section>
+
+      <!-- STEP: evaluasi -->
+      <section class="step" data-step="evaluasi">
+        <div class="step-head">
+          <div class="eyebrow">CHECKPOINT 9</div>
+          <h2>Evaluasi Akhir</h2>
+          <p>10 soal untuk menguji pemahamanmu. Jawab satu per satu.</p>
+        </div>
+        <div class="card">
+          <div class="quiz-progress" id="quiz-progress">Soal 1 dari 10</div>
+          <div id="quiz-body"></div>
+        </div>
+        <div class="step-nav"><button class="btn secondary" data-prev="refleksi">← Kembali</button><button class="btn" id="btn-finish" style="display:none;" data-next="selesai">Lihat Hasil Misi →</button></div>
+      </section>
+
+      <!-- STEP: selesai -->
+      <section class="step" data-step="selesai">
+        <div class="finish-wrap">
+          <div class="eyebrow">MISI TUNTAS</div>
+          <h2 style="font-size:2rem;">Misi Menjaga Hati Selesai</h2>
+          <p style="color:var(--muted);" id="finish-name"></p>
+          <div class="finish-lists">
+            <div class="card">
+              <h4 style="font-size:.95rem;">Yang sudah kamu pahami</h4>
+              <ul class="ciri">
+                <li>Mengenali perilaku munafik</li>
+                <li>Mengenali keras hati</li>
+                <li>Mengenali keras kepala</li>
+                <li>Memahami dampaknya bagi diri dan orang lain</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h4 style="font-size:.95rem;">Yang perlu terus dilatih</h4>
+              <ul class="ciri" id="finish-improve"></ul>
+            </div>
+          </div>
+          <p class="finish-quote">"Menjaga hati bukan tentang merasa lebih baik daripada orang lain. Menjaga hati adalah tentang terus berusaha memperbaiki diri."</p>
+          <div class="finish-actions">
+            <button class="btn secondary" id="btn-repeat">Ulangi Misi</button>
+            <button class="btn teal" id="btn-view-materi">Lihat Materi</button>
+            <button class="btn" id="btn-reflect-again">Refleksi Lagi</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ DATA ============ */
+const STEPS = [
+  {id:"kenali-masalah", label:"Kenali Masalah", icon:"🧭"},
+  {id:"materi", label:"Pelajari Materi", icon:"📖"},
+  {id:"dalil", label:"Jejak Dalil", icon:"🔍"},
+  {id:"detektif", label:"Detektif Sikap", icon:"🕵️"},
+  {id:"pilihan", label:"Pilihanmu", icon:"🧩"},
+  {id:"radar", label:"Radar Hati", icon:"❤️"},
+  {id:"tantangan", label:"Tantangan 7 Hari", icon:"✅"},
+  {id:"refleksi", label:"Refleksi", icon:"🪞"},
+  {id:"evaluasi", label:"Evaluasi", icon:"📝"},
+  {id:"selesai", label:"Misi Selesai", icon:"🏁"}
+];
+
+const situations = [
+  {text:`Raka berjanji akan mengerjakan bagian tugas kelompok. Namun sejak awal sebenarnya ia tidak berniat mengerjakannya.`,
+   opts:["Jujur","Munafik","Sabar","Tawaduk","Pemaaf"], correct:1,
+   exp:`Raka menunjukkan sikap yang berbeda antara ucapan (berjanji) dan niat sebenarnya sejak awal — ini termasuk ciri munafik: mengingkari janji.`},
+  {text:`Dinda selalu dinasihati temannya untuk mengumpulkan tugas tepat waktu, tetapi ia tidak pernah menghiraukan dan terus menunda-nunda.`,
+   opts:["Sabar","Rendah hati","Keras hati","Jujur","Pemaaf"], correct:2,
+   exp:`Dinda berulang kali menerima nasihat namun hatinya tidak tersentuh untuk berubah — ini ciri keras hati.`},
+  {text:`Bima sudah ditunjukkan bahwa jawabannya salah dengan bukti yang jelas, tetapi ia tetap bersikeras pendapatnya benar dan menolak mendengarkan.`,
+   opts:["Keras kepala","Rendah hati","Amanah","Toleransi","Sabar"], correct:0,
+   exp:`Bima mengetahui kekeliruannya tetapi tetap mempertahankan pendapatnya — ini ciri keras kepala.`},
+  {text:`Salsa melakukan kesalahan saat piket kelas. Ketika ditegur, ia langsung meminta maaf dan memperbaikinya.`,
+   opts:["Munafik","Keras hati","Keras kepala","Bertanggung jawab","Sombong"], correct:3,
+   exp:`Salsa menerima teguran dan langsung memperbaiki diri — ini justru sikap yang baik, bukan salah satu dari tiga sifat tercela yang kita pelajari.`},
+  {text:`Fajar memuji temannya habis-habisan di depannya, tetapi menjelekkannya di belakang.`,
+   opts:["Toleransi","Qana'ah","Munafik","Keras hati","Tawakal"], correct:2,
+   exp:`Yang ditampakkan Fajar di depan berbeda dengan apa yang sebenarnya ada dalam hatinya — ini ciri munafik.`}
+];
+
+const dalilItems = [
+  {ref:"HR. Bukhari dan Muslim", arabic:"آيَةُ الْمُنَافِقِ ثَلَاثٌ: إِذَا حَدَّثَ كَذَبَ، وَإِذَا وَعَدَ أَخْلَفَ، وَإِذَا اؤْتُمِنَ خَانَ",
+   terjemah:`"Tanda orang munafik ada tiga: apabila berbicara ia berdusta, apabila berjanji ia mengingkari, dan apabila diberi amanah ia berkhianat."`,
+   perilaku:"munafik", pesan:`Dalil ini menjelaskan tiga tanda kemunafikan: dusta dalam ucapan, ingkar janji, dan khianat amanah.`},
+  {ref:"QS. Al-Hadid: 16", arabic:"أَلَمْ يَأْنِ لِلَّذِينَ آمَنُوا أَنْ تَخْشَعَ قُلُوبُهُمْ لِذِكْرِ اللَّهِ وَمَا نَزَلَ مِنَ الْحَقِّ",
+   terjemah:`"Belum tibakah waktunya bagi orang-orang yang beriman, untuk secara khusyuk mengingat Allah dan mematuhi kebenaran yang telah diturunkan (kepada mereka)?"`,
+   perilaku:"keras-hati", pesan:`Hati orang beriman harus terbuka terhadap zikir, kebenaran, nasihat, dan perbaikan diri — bukan keras dan menolak.`},
+  {ref:"QS. Luqman: 18", arabic:"وَلَا تُصَعِّرْ خَدَّكَ لِلنَّاسِ وَلَا تَمْشِ فِي الْأَرْضِ مَرَحًا ۖ إِنَّ اللَّهَ لَا يُحِبُّ كُلَّ مُخْتَالٍ فَخُورٍ",
+   terjemah:`"Janganlah memalingkan wajahmu dari manusia (karena sombong) dan janganlah berjalan di bumi dengan angkuh. Sesungguhnya Allah tidak menyukai setiap orang yang sombong lagi membanggakan diri."`,
+   perilaku:"keras-kepala", pesan:`Larangan sombong dan angkuh — sikap yang menjadi penghalang seseorang menerima kebenaran dan nasihat orang lain, akar dari keras kepala.`}
+];
+const perilakuLabel = {munafik:"Munafik","keras-hati":"Keras Hati","keras-kepala":"Keras Kepala"};
+
+const detectiveCases = [
+  {text:`Andi meminjam uang temannya dan berjanji mengembalikan besok, padahal sejak awal ia tahu tidak akan mengembalikannya.`, cat:"munafik",
+   fb:{kata:"berjanji — sejak awal tidak akan mengembalikan", alasan:"Ada niat mengingkari janji sejak sebelum janji diucapkan.", seharusnya:"Jangan berjanji jika tidak mampu atau tidak berniat menepatinya."}},
+  {text:`Sari sudah berkali-kali dinasihati gurunya agar rajin salat, tetapi ia tetap mengabaikannya tanpa merasa bersalah.`, cat:"keras-hati",
+   fb:{kata:"berkali-kali dinasihati — tetap mengabaikan", alasan:"Nasihat berulang tidak menyentuh hatinya untuk berubah.", seharusnya:"Membuka hati mendengar nasihat, bukan mengabaikannya."}},
+  {text:`Dani yakin jawabannya benar meski guru sudah menjelaskan letak kesalahannya berkali-kali; ia tetap menolak menerima penjelasan itu.`, cat:"keras-kepala",
+   fb:{kata:"sudah dijelaskan — tetap menolak", alasan:"Ia mengetahui penjelasan yang benar tetapi mempertahankan pendapatnya sendiri.", seharusnya:"Menerima penjelasan yang benar meski berbeda dari pendapat awal."}},
+  {text:`Rina berkata akan ikut kerja bakti, tetapi diam-diam sejak awal ia memang tidak pernah berniat datang.`, cat:"munafik",
+   fb:{kata:"berkata akan ikut — sejak awal tidak berniat", alasan:"Ucapan tidak sesuai dengan niat sebenarnya.", seharusnya:"Berkata sesuai dengan apa yang benar-benar diniatkan."}},
+  {text:`Made melakukan kesalahan dalam tugas kelompok, langsung meminta maaf dan memperbaikinya begitu diberi tahu.`, cat:"bukan",
+   fb:{kata:"langsung meminta maaf — memperbaiki", alasan:"Ini justru sikap bertanggung jawab dan terbuka, bukan salah satu dari tiga sifat tercela.", seharusnya:"Pertahankan sikap ini — mengakui dan memperbaiki kesalahan."}},
+  {text:`Yusuf tahu pendapatnya keliru setelah dijelaskan alasannya, tetapi tetap mempertahankannya karena tidak mau dianggap salah oleh teman-temannya.`, cat:"keras-kepala",
+   fb:{kata:"tahu keliru — tetap mempertahankan karena gengsi", alasan:"Ego dan rasa gengsi membuatnya menolak kebenaran yang sudah diketahuinya.", seharusnya:"Mengutamakan kebenaran di atas gengsi."}},
+  {text:`Wati sering tampak ramah di depan orang, tetapi suka membicarakan keburukan orang itu saat tidak ada.`, cat:"munafik",
+   fb:{kata:"ramah di depan — menjelekkan di belakang", alasan:"Sikap yang ditampakkan berbeda dari yang sebenarnya ada dalam hati dan lisannya.", seharusnya:"Bersikap konsisten antara di depan dan di belakang orang lain."}},
+  {text:`Budi terlambat mengumpulkan tugas karena sakit, lalu ia menjelaskan alasannya dengan jujur kepada guru.`, cat:"bukan",
+   fb:{kata:"menjelaskan dengan jujur", alasan:"Keterlambatan karena alasan wajar yang disampaikan dengan jujur bukan bagian dari tiga sifat tercela.", seharusnya:"Tetap jujur menyampaikan keadaan seperti ini."}},
+  {text:`Nadia sulit tersentuh meski sudah mendengar kisah yang mengharukan tentang pentingnya berbakti pada orang tua; ia tetap bersikap acuh.`, cat:"keras-hati",
+   fb:{kata:"sudah mendengar — tetap acuh", alasan:"Hatinya tidak tergerak meski sudah mendapat pengingat yang menyentuh.", seharusnya:"Membiarkan hati tersentuh oleh kebaikan dan nasihat."}},
+  {text:`Fikri diberi amanah menjaga barang temannya, tetapi ia malah memakainya tanpa izin dan berbohong saat ditanya.`, cat:"munafik",
+   fb:{kata:"amanah — berkhianat dan berbohong", alasan:"Dua tanda munafik sekaligus muncul: khianat amanah dan dusta.", seharusnya:"Menjaga amanah sebagaimana mestinya dan jujur bila ditanya."}},
+  {text:`Rani menolak permintaan maaf temannya dan bersikeras temannya harus mengaku salah dulu, padahal Rani sendiri juga bersalah.`, cat:"keras-kepala",
+   fb:{kata:"bersikeras — padahal juga bersalah", alasan:"Ia memaksakan kehendaknya sendiri dan menolak mengakui perannya dalam masalah.", seharusnya:"Bersedia mengakui kesalahan diri sendiri, bukan hanya menuntut orang lain."}},
+  {text:`Hendra mendengar kritik dari teman tentang sikapnya, awalnya kesal, tetapi setelah dipikirkan ia mengakui itu benar dan mengubah sikapnya.`, cat:"bukan",
+   fb:{kata:"awalnya kesal — akhirnya mengubah sikap", alasan:"Wajar merasa tidak nyaman menerima kritik, tetapi yang menentukan adalah ia akhirnya terbuka dan berubah — ini bukan keras hati.", seharusnya:"Teruskan kebiasaan merenungkan kritik sebelum bereaksi."}}
+];
+const catLabel = {munafik:"Munafik", "keras-hati":"Keras Hati", "keras-kepala":"Keras Kepala", bukan:"Bukan Ketiganya"};
+
+const scenarios = [
+  {title:"Kerja Kelompok",
+   situation:`Kamu melakukan kesalahan yang menyebabkan tugas kelompok terlambat. Temanmu mengingatkanmu.`,
+   choices:[
+     {text:"Menyangkal dan menyalahkan teman.", good:false, consequence:"Suasana kelompok menjadi tegang, temanmu merasa tidak dihargai, dan masalah aslinya tidak pernah selesai."},
+     {text:"Marah karena merasa dikritik.", good:false, consequence:"Kamu kehilangan kesempatan memperbaiki diri, dan teman jadi enggan memberi masukan lagi di kemudian hari."},
+     {text:"Mengakui kesalahan dan memperbaikinya.", good:true, consequence:"Kepercayaan teman tetap terjaga, tugas bisa diselesaikan bersama, dan kamu belajar dari kesalahan itu."},
+     {text:"Pura-pura setuju tetapi tetap menyalahkan teman di belakang.", good:false, consequence:"Ini menunjukkan sikap tidak jujur (mirip munafik) karena yang kamu tunjukkan berbeda dari yang sebenarnya kamu rasakan."}
+   ]},
+  {title:"Mendapat Nasihat Orang Tua",
+   situation:`Orang tuamu mengingatkan agar kamu mengurangi waktu bermain gawai karena mulai mengganggu waktu belajar dan salat.`,
+   choices:[
+     {text:"Mendengarkan dan mencoba mengatur waktu dengan lebih baik.", good:true, consequence:"Kamu jadi lebih disiplin, dan hubunganmu dengan orang tua tetap hangat karena mereka merasa didengarkan."},
+     {text:"Diam saja tetapi tetap merasa tidak ada yang salah dengan kebiasaanmu.", good:false, consequence:"Nasihat itu tidak benar-benar menyentuh hatimu, kebiasaan lama pun berlanjut — ini mengarah pada keras hati."},
+     {text:"Membantah dan menganggap orang tua terlalu mengatur.", good:false, consequence:"Muncul ketegangan di rumah, dan kamu kehilangan kesempatan untuk introspeksi — ini mengarah pada keras kepala."},
+     {text:"Mengangguk di depan tetapi tidak mengubah kebiasaan sama sekali.", good:false, consequence:"Ucapanmu tidak sesuai dengan perbuatanmu — ini mirip sikap munafik dalam menghadapi nasihat."}
+   ]},
+  {title:"Konflik dengan Teman",
+   situation:`Kamu berselisih pendapat dengan teman tentang cara mengerjakan proyek. Pendapatmu ternyata kurang tepat, tetapi kamu sudah terlanjur menyampaikannya dengan yakin di depan kelompok.`,
+   choices:[
+     {text:"Tetap mempertahankan pendapat karena malu mengaku salah.", good:false, consequence:"Proyek berjalan dengan cara yang kurang tepat, dan kamu kehilangan kesempatan belajar dari kekeliruan — ini keras kepala."},
+     {text:"Mengakui dengan tenang bahwa pendapat temanmu lebih tepat.", good:true, consequence:"Kelompok bisa melanjutkan proyek dengan cara yang lebih baik, dan teman-teman menghargai kebesaran hatimu."},
+     {text:"Diam saja dan enggan terlibat lagi dalam diskusi kelompok.", good:false, consequence:"Masalah tidak terselesaikan dan kamu kehilangan kesempatan memperbaiki keadaan — menghindar bukan solusi."},
+     {text:"Menyalahkan situasi atau orang lain atas kekeliruan pendapatmu.", good:false, consequence:"Kamu lari dari tanggung jawab, dan kepercayaan kelompok terhadapmu bisa berkurang."}
+   ]}
+];
+const scenarioFollowups = ["Apa dampak dari pilihanmu tadi?","Sifat apa yang perlu dihindari dalam situasi ini?","Sikap apa yang sebenarnya lebih tepat?"];
+
+const radarStatements = [
+  "Saya berani mengakui kesalahan.",
+  "Saya mau menerima kritik.",
+  "Saya berusaha menepati janji.",
+  "Saya tidak berpura-pura di depan orang lain.",
+  "Saya mau mengubah pendapat jika ternyata salah.",
+  "Saya mau mendengarkan nasihat.",
+  "Saya tidak mudah menyalahkan orang lain."
+];
+
+const flipCards = [
+  {neg:"Tidak mau menerima kritik", pos:"Mendengarkan kritik dan mengambil pelajaran"},
+  {neg:"Tidak mau mengakui kesalahan", pos:"Berani mengakui dan memperbaiki kesalahan"},
+  {neg:"Memaksakan pendapat", pos:"Menyampaikan pendapat dengan santun dan menghargai orang lain"},
+  {neg:"Berpura-pura setuju", pos:"Jujur menyampaikan pendapat dengan cara yang baik"},
+  {neg:"Menyalahkan orang lain saat berbuat salah", pos:"Berani bertanggung jawab atas kesalahan sendiri"},
+  {neg:"Berjanji tanpa berniat menepati", pos:"Berjanji hanya jika benar-benar mampu menepatinya"},
+  {neg:"Menutup diri dari kritik karena gengsi", pos:"Membuka diri terhadap kritik sebagai bahan perbaikan"},
+  {neg:"Merasa pendapat sendiri paling benar", pos:"Menghargai bahwa pendapat orang lain bisa lebih tepat"}
+];
+
+const commitments = [
+  "Saya akan lebih jujur.",
+  "Saya akan berusaha menepati janji.",
+  "Saya akan lebih terbuka terhadap nasihat.",
+  "Saya akan berani mengakui kesalahan.",
+  "Saya akan belajar menerima kritik.",
+  "Saya akan mengurangi sikap memaksakan kehendak.",
+  "Saya akan melakukan muhasabah.",
+  "Saya akan berusaha tidak menghakimi orang lain."
+];
+
+const reflectQuestions = [
+  "Apa sifat yang paling perlu saya waspadai dalam diri saya?",
+  "Mengapa menerima nasihat terkadang sulit?",
+  "Apa yang akan saya lakukan ketika ternyata pendapat saya salah?",
+  "Bagaimana cara menjaga agar perkataan dan perbuatan saya tetap selaras?",
+  "Apa perubahan kecil yang akan saya mulai hari ini?"
+];
+
+const quizQuestions = [
+  {q:"Sikap yang ditunjukkan ketika seseorang berkata benar tetapi kenyataan dalam hatinya berbeda disebut...", opts:["Sabar","Munafik","Tawaduk","Syukur","Qana'ah"], correct:1, exp:"Munafik adalah ketidaksesuaian antara yang ditampakkan dengan kenyataan dalam hati atau perbuatan.", goal:"Menjelaskan pengertian munafik"},
+  {q:"Keadaan hati yang sulit menerima nasihat dan kebenaran disebut...", opts:["Keras hati","Rendah hati","Lapang dada","Sabar","Ikhlas"], correct:0, exp:"Keras hati adalah kondisi hati yang sulit tersentuh oleh nasihat dan kebenaran.", goal:"Menjelaskan pengertian keras hati"},
+  {q:"Sikap mempertahankan pendapat sendiri dan sulit menerima kebenaran meski sudah dijelaskan disebut...", opts:["Tawakal","Optimis","Keras kepala","Percaya diri","Teguh pendirian"], correct:2, exp:"Keras kepala adalah sikap mempertahankan pendapat sendiri meski sudah diberi penjelasan yang benar.", goal:"Menjelaskan pengertian keras kepala"},
+  {q:"Hadis riwayat Bukhari dan Muslim tentang \u201capabila berbicara ia berdusta, apabila berjanji ia mengingkari, apabila diberi amanah ia berkhianat\u201d menjelaskan tanda-tanda...", opts:["Orang sabar","Orang munafik","Orang riya","Orang sombong","Orang zalim"], correct:1, exp:"Hadis ini secara khusus menjelaskan tiga tanda kemunafikan.", goal:"Mengidentifikasi dalil tentang munafik"},
+  {q:"QS. Luqman ayat 18 berisi larangan bersikap sombong yang berkaitan erat dengan sifat...", opts:["Munafik","Keras hati","Keras kepala","Riya","Dengki"], correct:2, exp:"Kesombongan yang dilarang dalam ayat ini menjadi akar sikap keras kepala yang menolak menerima kebenaran.", goal:"Mengidentifikasi dalil tentang keras kepala"},
+  {q:"Seorang siswa berjanji akan membantu temannya belajar, namun sejak awal ia sebenarnya tidak berniat menepatinya. Sikap ini termasuk ciri...", opts:["Sabar","Munafik","Keras hati","Keras kepala","Tawaduk"], correct:1, exp:"Mengingkari janji yang memang sejak awal tidak diniatkan untuk ditepati adalah ciri munafik.", goal:"Mengklasifikasi ciri-ciri perilaku munafik"},
+  {q:"Seorang siswa mengetahui jawabannya keliru setelah dijelaskan gurunya, namun tetap mempertahankan pendapatnya karena tidak ingin dianggap salah oleh teman-temannya. Sikap ini menunjukkan ciri...", opts:["Keras kepala","Keras hati","Munafik","Sombong berlebihan","Pemarah"], correct:0, exp:"Mempertahankan pendapat yang sudah diketahui keliru demi gengsi adalah ciri keras kepala.", goal:"Mengklasifikasi ciri-ciri perilaku keras kepala"},
+  {q:"Seorang siswa berulang kali dinasihati agar disiplin, namun tidak pernah tergerak untuk berubah meski sudah tahu itu salah. Sikap ini paling menunjukkan ciri...", opts:["Munafik","Keras hati","Keras kepala","Sombong","Riya"], correct:1, exp:"Tidak tergerak berubah meski berulang kali dinasihati adalah ciri keras hati.", goal:"Mengklasifikasi ciri-ciri perilaku keras hati"},
+  {q:"Dampak jangka panjang dari sikap munafik yang dibiarkan terus-menerus adalah...", opts:["Semakin disukai banyak orang","Kepercayaan orang lain semakin hilang","Hidup menjadi lebih tenang","Hubungan sosial semakin erat","Prestasi belajar meningkat"], correct:1, exp:"Kebohongan dan khianat yang berulang membuat orang lain kehilangan kepercayaan.", goal:"Menghindari dampak perilaku munafik"},
+  {q:"Salah satu cara utama menghindari sikap keras hati dan keras kepala adalah...", opts:["Menghindari semua nasihat orang lain","Selalu mempertahankan pendapat sendiri","Membiasakan muhasabah dan terbuka menerima nasihat","Tidak pernah mengakui kesalahan","Menjauhi orang yang memberi kritik"], correct:2, exp:"Muhasabah dan keterbukaan terhadap nasihat adalah kunci utama menjaga hati tetap lapang.", goal:"Mengambil hikmah untuk menghindari dampak perilaku tercela"}
+];
+
+/* ============ STATE ============ */
+const state = {
+  nama:"", kelas:"", theme:"light", sound:true,
+  situationAns:{}, caseAns:{}, dalilAns:{}, scenarioIdx:0, scenarioAns:{}, scenarioFollowup:{},
+  radarAns:{}, flipSeen:{}, commit:{}, commitFree:"", reflect:{}, quizIdx:0, quizAns:{}
+};
+
+const STORE_KEY = "misi-menjaga-hati-state";
+function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw){ Object.assign(state, JSON.parse(raw)); }
+  }catch(e){}
+}
+
+/* ============ AUDIO ============ */
+let actx;
+function ensureAudio(){ if(!actx){ try{ actx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } }
+function beep(freq, dur, type){
+  if(!state.sound) return;
+  ensureAudio();
+  if(!actx) return;
+  const o = actx.createOscillator(), g = actx.createGain();
+  o.type = type||"sine"; o.frequency.value = freq;
+  g.gain.value = 0.06;
+  o.connect(g); g.connect(actx.destination);
+  o.start();
+  g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + dur);
+  o.stop(actx.currentTime + dur);
+}
+function sfxClick(){ beep(320,.06,"sine"); }
+function sfxCorrect(){ beep(520,.09,"triangle"); setTimeout(()=>beep(780,.12,"triangle"),90); }
+function sfxWrong(){ beep(160,.16,"sawtooth"); }
+function sfxComplete(){ [440,554,659,880].forEach((f,i)=>setTimeout(()=>beep(f,.16,"triangle"), i*110)); }
+
+/* ============ CONFETTI ============ */
+const canvas = document.getElementById("confetti-canvas");
+const ctx = canvas.getContext("2d");
+function resizeCanvas(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+resizeCanvas(); addEventListener("resize", resizeCanvas);
+function confettiBurst(){
+  const colors = ["#A8433A","#A9761F","#2F6F62","#D97D72","#D8B76A"];
+  const particles = [];
+  for(let i=0;i<90;i++){
+    particles.push({
+      x: canvas.width/2, y: canvas.height/3,
+      vx:(Math.random()-0.5)*10, vy:(Math.random()-1.2)*10,
+      size: 4+Math.random()*5, color: colors[i%colors.length],
+      rot: Math.random()*Math.PI, vrot:(Math.random()-0.5)*0.3, life:0
+    });
+  }
+  let frame=0;
+  function tick(){
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.vy += 0.25; p.x += p.vx; p.y += p.vy; p.rot += p.vrot; p.life++;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, 1-p.life/90);
+      ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+      ctx.restore();
+    });
+    if(frame<95) requestAnimationFrame(tick); else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  tick();
+}
+
+/* ============ NAV / SHELL ============ */
+let currentStep = "kenali-masalah";
+
+function buildNav(){
+  const journey = document.getElementById("journey");
+  const mobile = document.getElementById("stepper-mobile");
+  journey.innerHTML = ""; mobile.innerHTML = "";
+  const line = document.createElement("div"); line.className="journey-line"; journey.appendChild(line);
+  STEPS.forEach(s=>{
+    const b = document.createElement("button");
+    b.className = "journey-item"; b.dataset.step = s.id;
+    b.innerHTML = `<span class="dot"></span><span>${s.icon} ${s.label}</span>`;
+    b.addEventListener("click", ()=>goToStep(s.id));
+    journey.appendChild(b);
+
+    const mb = document.createElement("button");
+    mb.dataset.step = s.id; mb.textContent = s.icon+" "+s.label;
+    mb.addEventListener("click", ()=>goToStep(s.id));
+    mobile.appendChild(mb);
+  });
+}
+
+function goToStep(id){
+  currentStep = id;
+  document.querySelectorAll(".step").forEach(el=> el.classList.toggle("active", el.dataset.step===id));
+  document.querySelectorAll(".journey-item").forEach(el=>{
+    el.classList.toggle("active", el.dataset.step===id);
+  });
+  document.querySelectorAll(".stepper-mobile button").forEach(el=>{
+    el.classList.toggle("active", el.dataset.step===id);
+  });
+  updateProgress();
+  window.scrollTo({top:0, behavior:"smooth"});
+  save();
+}
+
+function stepDone(id){
+  switch(id){
+    case "kenali-masalah": return Object.keys(state.situationAns).length>=situations.length;
+    case "materi": return true;
+    case "dalil": return Object.keys(state.dalilAns).length>=dalilItems.length;
+    case "detektif": return Object.keys(state.caseAns).length>=detectiveCases.length;
+    case "pilihan": return Object.keys(state.scenarioAns).length>=scenarios.length;
+    case "radar": return Object.keys(state.radarAns).length>=radarStatements.length;
+    case "tantangan": return Object.values(state.commit).filter(Boolean).length>=3;
+    case "refleksi": return Object.keys(state.reflect).length>=reflectQuestions.length;
+    case "evaluasi": return Object.keys(state.quizAns).length>=quizQuestions.length;
+    case "selesai": return false;
+  }
+  return false;
+}
+
+function updateProgress(){
+  let doneCount = 0;
+  STEPS.forEach(s=>{ if(stepDone(s.id)) doneCount++; });
+  const pct = Math.round((doneCount/(STEPS.length-1))*100);
+  document.getElementById("progress-fill").style.width = Math.min(pct,100)+"%";
+  document.getElementById("heart-fill-rect").setAttribute("height", (27*Math.min(pct,100)/100));
+  document.getElementById("heart-fill-rect").setAttribute("y", 27-(27*Math.min(pct,100)/100));
+  document.querySelectorAll(".journey-item").forEach(el=> el.classList.toggle("done", stepDone(el.dataset.step)));
+  document.querySelectorAll(".stepper-mobile button").forEach(el=> el.classList.toggle("done", stepDone(el.dataset.step)));
+}
+
+document.body.addEventListener("click", (e)=>{
+  const next = e.target.closest("[data-next]");
+  const prev = e.target.closest("[data-prev]");
+  if(next){ sfxClick(); goToStep(next.dataset.next); }
+  if(prev){
+    sfxClick();
+    const idx = STEPS.findIndex(s=>s.id===prev.dataset.prev);
+    goToStep(STEPS[Math.max(0,idx-1)].id);
+  }
+});
+
+/* ============ RENDER: SITUATIONS ============ */
+function renderSituations(){
+  const wrap = document.getElementById("situation-list");
+  wrap.innerHTML = "";
+  situations.forEach((s,i)=>{
+    const card = document.createElement("div");
+    card.className = "card situation-card";
+    const letters = ["A","B","C","D","E"];
+    card.innerHTML = `<p class="situation-text"><strong>Situasi ${i+1}.</strong> ${s.text}</p>
+      <div class="opt-list">${s.opts.map((o,oi)=>`<button class="opt" data-oi="${oi}"><span class="key">${letters[oi]}</span>${o}</button>`).join("")}</div>
+      <div class="feedback"></div>`;
+    wrap.appendChild(card);
+    const answered = state.situationAns[i];
+    const btns = card.querySelectorAll(".opt");
+    const fb = card.querySelector(".feedback");
+    function lock(){
+      btns.forEach(b=>{
+        b.disabled = true;
+        const oi = +b.dataset.oi;
+        if(oi===s.correct) b.classList.add("correct");
+        else if(oi===state.situationAns[i]) b.classList.add("wrong");
+      });
+      fb.classList.add("show");
+      fb.classList.add(state.situationAns[i]===s.correct?"ok":"bad");
+      fb.textContent = s.exp;
+    }
+    if(answered!==undefined) lock();
+    btns.forEach(b=>b.addEventListener("click", ()=>{
+      if(state.situationAns[i]!==undefined) return;
+      const oi = +b.dataset.oi;
+      state.situationAns[i]=oi;
+      oi===s.correct?sfxCorrect():sfxWrong();
+      lock(); updateProgress(); save();
+    }));
+  });
+}
+
+/* ============ RENDER: DALIL MATCH ============ */
+function renderDalil(){
+  const wrap = document.getElementById("dalil-match-list");
+  wrap.innerHTML = "";
+  dalilItems.forEach((d,i)=>{
+    const card = document.createElement("div");
+    card.className = "card dalil-match-card";
+    card.innerHTML = `
+      <div class="dalil-box">
+        <p class="arabic">${d.arabic}</p>
+        <p class="dalil-terjemah">${d.terjemah}</p>
+        <p class="dalil-sumber">${d.ref}</p>
+      </div>
+      <p style="font-size:.9rem; color:var(--muted); font-weight:600;">Dalil ini menjelaskan tentang perilaku apa?</p>
+      <div class="pick-row">
+        ${["munafik","keras-hati","keras-kepala"].map(cat=>`<button class="cat-btn" data-cat="${cat}">${perilakuLabel[cat]}</button>`).join("")}
+      </div>
+      <div class="reveal"></div>`;
+    wrap.appendChild(card);
+    const btns = card.querySelectorAll(".cat-btn");
+    const reveal = card.querySelector(".reveal");
+    function lock(){
+      btns.forEach(b=>{
+        b.disabled = true;
+        if(b.dataset.cat===d.perilaku) b.classList.add("pick-correct");
+        else if(b.dataset.cat===state.dalilAns[i]) b.classList.add("pick-wrong");
+      });
+      reveal.classList.add("show");
+      reveal.innerHTML = `<strong>Pesan:</strong> ${d.pesan}`;
+      checkDalilConclusion();
+    }
+    if(state.dalilAns[i]) lock();
+    btns.forEach(b=>b.addEventListener("click", ()=>{
+      if(state.dalilAns[i]) return;
+      state.dalilAns[i]=b.dataset.cat;
+      b.dataset.cat===d.perilaku?sfxCorrect():sfxWrong();
+      lock(); updateProgress(); save();
+    }));
+  });
+}
+function checkDalilConclusion(){
+  if(Object.keys(state.dalilAns).length>=dalilItems.length){
+    document.getElementById("dalil-conclusion").style.display="block";
+  }
+}
+
+/* ============ RENDER: DETECTIVE CASES ============ */
+function renderCases(){
+  const grid = document.getElementById("case-grid");
+  grid.innerHTML = "";
+  detectiveCases.forEach((c,i)=>{
+    const card = document.createElement("div");
+    card.className = "case-card";
+    card.innerHTML = `<p><strong>Kasus ${i+1}.</strong> ${c.text}</p>
+      <div class="cat-btns">
+        ${Object.keys(catLabel).map(cat=>`<button class="cat-btn" data-cat="${cat}">${catLabel[cat]}</button>`).join("")}
+      </div>
+      <div class="case-fb"></div>`;
+    grid.appendChild(card);
+    const btns = card.querySelectorAll(".cat-btn");
+    const fb = card.querySelector(".case-fb");
+    function lock(){
+      card.classList.add("solved");
+      btns.forEach(b=>{
+        b.disabled = true;
+        if(b.dataset.cat===c.cat) b.classList.add("pick-correct");
+        else if(b.dataset.cat===state.caseAns[i]) b.classList.add("pick-wrong");
+      });
+      fb.classList.add("show");
+      fb.innerHTML = `<b>Kata kunci:</b> ${c.fb.kata}<br><b>Mengapa:</b> ${c.fb.alasan}<br><b>Sikap yang seharusnya:</b> ${c.fb.seharusnya}`;
+      updateCaseProgress();
+    }
+    if(state.caseAns[i]) lock();
+    btns.forEach(b=>b.addEventListener("click", ()=>{
+      if(state.caseAns[i]) return;
+      state.caseAns[i]=b.dataset.cat;
+      b.dataset.cat===c.cat?sfxCorrect():sfxWrong();
+      lock(); updateProgress(); save();
+    }));
+  });
+  updateCaseProgress();
+}
+function updateCaseProgress(){
+  document.getElementById("case-progress").textContent = `${Object.keys(state.caseAns).length} dari ${detectiveCases.length} kasus terpecahkan`;
+}
+
+/* ============ RENDER: SCENARIOS ============ */
+function renderScenarioNav(){
+  const nav = document.getElementById("scenario-nav");
+  nav.innerHTML = "";
+  scenarios.forEach((s,i)=>{
+    const b = document.createElement("button");
+    b.className = "scenario-tab";
+    b.textContent = `${i+1}. ${s.title}`;
+    b.addEventListener("click", ()=>{ state.scenarioIdx=i; renderScenario(); });
+    nav.appendChild(b);
+  });
+}
+function renderScenario(){
+  const i = state.scenarioIdx;
+  const s = scenarios[i];
+  document.querySelectorAll(".scenario-tab").forEach((b,bi)=>{
+    b.classList.toggle("active", bi===i);
+    b.classList.toggle("done", !!state.scenarioAns[bi]);
+  });
+  const body = document.getElementById("scenario-body");
+  const letters = ["A","B","C","D"];
+  body.innerHTML = `
+    <p class="situation-text">${s.situation}</p>
+    <div class="opt-list">${s.choices.map((c,ci)=>`<button class="opt" data-ci="${ci}"><span class="key">${letters[ci]}</span>${c.text}</button>`).join("")}</div>
+    <div class="consequence-box"></div>
+    <div class="followup">
+      ${scenarioFollowups.map((q,qi)=>`<label>${q}</label><textarea data-qi="${qi}" placeholder="Tulis jawabanmu..."></textarea>`).join("")}
+    </div>`;
+  const btns = body.querySelectorAll(".opt");
+  const cbox = body.querySelector(".consequence-box");
+  const followup = body.querySelector(".followup");
+  function lock(){
+    const chosenIdx = s.choices.findIndex((c,ci)=> ci===state.scenarioAns[i]);
+    btns.forEach((b,ci)=>{
+      b.disabled = true;
+      if(ci===chosenIdx) b.classList.add(s.choices[ci].good?"correct":"wrong");
+    });
+    cbox.classList.add("show", s.choices[chosenIdx].good?"good":"notgood");
+    cbox.textContent = s.choices[chosenIdx].consequence;
+    followup.classList.add("show");
+    followup.querySelectorAll("textarea").forEach(ta=>{
+      const qi = ta.dataset.qi;
+      const key = i+"-"+qi;
+      if(state.scenarioFollowup[key]) ta.value = state.scenarioFollowup[key];
+      ta.addEventListener("input", ()=>{ state.scenarioFollowup[key]=ta.value; save(); });
+    });
+  }
+  if(state.scenarioAns[i]!==undefined) lock();
+  btns.forEach(b=>b.addEventListener("click", ()=>{
+    if(state.scenarioAns[i]!==undefined) return;
+    const ci = +b.dataset.ci;
+    state.scenarioAns[i]=ci;
+    s.choices[ci].good?sfxCorrect():sfxWrong();
+    lock(); updateProgress(); save();
+    document.querySelectorAll(".scenario-tab")[i].classList.add("done");
+  }));
+}
+
+/* ============ RENDER: RADAR ============ */
+function renderRadar(){
+  const wrap = document.getElementById("radar-list");
+  wrap.innerHTML = "";
+  const opts = ["Sering","Kadang-kadang","Perlu diperbaiki"];
+  radarStatements.forEach((s,i)=>{
+    const row = document.createElement("div");
+    row.className = "radar-row";
+    row.innerHTML = `<p>${i+1}. ${s}</p><div class="radar-opts">${opts.map(o=>`<button class="radar-opt" data-o="${o}">${o}</button>`).join("")}</div>`;
+    wrap.appendChild(row);
+    const btns = row.querySelectorAll(".radar-opt");
+    function refresh(){ btns.forEach(b=> b.classList.toggle("active", b.dataset.o===state.radarAns[i])); }
+    refresh();
+    btns.forEach(b=>b.addEventListener("click", ()=>{
+      state.radarAns[i]=b.dataset.o; sfxClick(); refresh(); updateProgress(); save(); renderRadarResult();
+    }));
+  });
+  renderRadarResult();
+}
+function renderRadarResult(){
+  const total = Object.keys(state.radarAns).length;
+  const box = document.getElementById("radar-result");
+  if(total<radarStatements.length){ box.classList.remove("show"); return; }
+  box.classList.add("show");
+  const good = [], bad = [];
+  radarStatements.forEach((s,i)=>{
+    const a = state.radarAns[i];
+    if(a==="Sering") good.push(s);
+    else if(a==="Perlu diperbaiki") bad.push(s);
+  });
+  document.getElementById("radar-good").innerHTML = good.length? good.map(s=>`<li>${s}</li>`).join("") : "<li>Teruslah bertumbuh — semua butuh proses.</li>";
+  document.getElementById("radar-bad").innerHTML = bad.length? bad.map(s=>`<li>${s}</li>`).join("") : "<li>Tidak ada yang menonjol untuk saat ini. Tetap jaga!</li>";
+}
+
+/* ============ RENDER: FLIP CARDS ============ */
+function renderFlip(){
+  const grid = document.getElementById("flip-grid");
+  grid.innerHTML = "";
+  flipCards.forEach((c,i)=>{
+    const card = document.createElement("div");
+    card.className = "flip-card" + (state.flipSeen[i]?" flipped":"");
+    card.innerHTML = `<div class="flip-inner">
+      <div class="flip-face flip-front">${c.neg}</div>
+      <div class="flip-face flip-back">${c.pos}</div>
+    </div>`;
+    card.addEventListener("click", ()=>{
+      card.classList.toggle("flipped");
+      state.flipSeen[i]=card.classList.contains("flipped");
+      sfxClick(); save();
+    });
+    grid.appendChild(card);
+  });
+}
+
+/* ============ RENDER: COMMITMENTS ============ */
+function renderCommit(){
+  const list = document.getElementById("commit-list");
+  list.innerHTML = "";
+  commitments.forEach((c,i)=>{
+    const item = document.createElement("label");
+    item.className = "commit-item";
+    item.innerHTML = `<input type="checkbox" data-i="${i}" ${state.commit[i]?"checked":""}><span>${c}</span>`;
+    list.appendChild(item);
+    item.querySelector("input").addEventListener("change", (e)=>{
+      state.commit[i]=e.target.checked; sfxClick(); updateCommitCounter(); updateProgress(); save();
+    });
+  });
+  const free = document.getElementById("commit-free");
+  free.value = state.commitFree||"";
+  free.addEventListener("input", ()=>{ state.commitFree=free.value; save(); });
+  updateCommitCounter();
+}
+function updateCommitCounter(){
+  const n = Object.values(state.commit).filter(Boolean).length;
+  document.getElementById("commit-counter").textContent = `${n} komitmen dipilih (minimal 3)`;
+}
+
+/* ============ RENDER: REFLECTION ============ */
+function renderReflect(){
+  const wrap = document.getElementById("reflect-list");
+  wrap.innerHTML = "";
+  reflectQuestions.forEach((q,i)=>{
+    const div = document.createElement("div");
+    div.className = "reflect-q";
+    div.innerHTML = `<label>${i+1}. ${q}</label><textarea data-i="${i}" placeholder="Tulis jawabanmu di sini...">${state.reflect[i]||""}</textarea>`;
+    wrap.appendChild(div);
+    div.querySelector("textarea").addEventListener("input", (e)=>{
+      state.reflect[i]=e.target.value; updateProgress(); save();
+    });
+  });
+}
+
+/* ============ RENDER: QUIZ ============ */
+function renderQuiz(){
+  const i = state.quizIdx;
+  const q = quizQuestions[i];
+  document.getElementById("quiz-progress").textContent = `Soal ${i+1} dari ${quizQuestions.length}`;
+  const body = document.getElementById("quiz-body");
+  const letters = ["A","B","C","D","E"];
+  body.innerHTML = `
+    <p class="situation-text">${q.q}</p>
+    <div class="opt-list">${q.opts.map((o,oi)=>`<button class="opt" data-oi="${oi}"><span class="key">${letters[oi]}</span>${o}</button>`).join("")}</div>
+    <div class="quiz-explain"></div>
+    <div class="step-nav" style="margin-top:18px;">
+      <button class="btn secondary" id="quiz-back" ${i===0?"disabled":""}>← Soal sebelumnya</button>
+      <button class="btn" id="quiz-forward" ${i>=quizQuestions.length-1?"style=display:none;":""}>Soal berikutnya →</button>
+    </div>`;
+  const btns = body.querySelectorAll(".opt");
+  const explain = body.querySelector(".quiz-explain");
+  function lock(){
+    const chosen = state.quizAns[i];
+    btns.forEach(b=>{
+      b.disabled = true;
+      const oi = +b.dataset.oi;
+      if(oi===q.correct) b.classList.add("correct");
+      else if(oi===chosen) b.classList.add("wrong");
+    });
+    explain.classList.add("show");
+    explain.innerHTML = `<strong>${chosen===q.correct?"Benar!":"Kurang tepat."}</strong> Jawaban yang benar: <strong>${letters[q.correct]}. ${q.opts[q.correct]}</strong><br>${q.exp}<div class="quiz-goal">Menguji: ${q.goal}</div>`;
+  }
+  if(state.quizAns[i]!==undefined) lock();
+  btns.forEach(b=>b.addEventListener("click", ()=>{
+    if(state.quizAns[i]!==undefined) return;
+    const oi = +b.dataset.oi;
+    state.quizAns[i]=oi;
+    oi===q.correct?sfxCorrect():sfxWrong();
+    lock(); updateProgress(); save();
+    checkQuizComplete();
+  }));
+  body.querySelector("#quiz-back").addEventListener("click", ()=>{ state.quizIdx=Math.max(0,i-1); renderQuiz(); });
+  const fwdBtn = body.querySelector("#quiz-forward");
+  if(fwdBtn) fwdBtn.addEventListener("click", ()=>{ state.quizIdx=Math.min(quizQuestions.length-1,i+1); renderQuiz(); });
+  checkQuizComplete();
+}
+function checkQuizComplete(){
+  const done = Object.keys(state.quizAns).length>=quizQuestions.length;
+  document.getElementById("btn-finish").style.display = done? "inline-flex":"none";
+}
+
+/* ============ FINISH ============ */
+function renderFinish(){
+  document.getElementById("finish-name").textContent = state.nama? `${state.nama} · ${state.kelas||""}`:"";
+  const bad = [];
+  radarStatements.forEach((s,i)=>{ if(state.radarAns[i]==="Perlu diperbaiki") bad.push(s); });
+  const commitChosen = commitments.filter((c,i)=>state.commit[i]);
+  const improve = [...new Set([...bad, ...commitChosen])];
+  const list = document.getElementById("finish-improve");
+  list.innerHTML = improve.length? improve.slice(0,6).map(s=>`<li>${s}</li>`).join("") : "<li>Terus konsisten menjaga kebiasaan baik yang sudah kamu bangun.</li>";
+  confettiBurst(); sfxComplete();
+}
+document.getElementById("btn-repeat").addEventListener("click", ()=>{
+  if(confirm("Ulangi misi dari awal? Semua jawabanmu akan direset.")){
+    localStorage.removeItem(STORE_KEY);
+    location.reload();
+  }
+});
+document.getElementById("btn-view-materi").addEventListener("click", ()=> goToStep("materi"));
+document.getElementById("btn-reflect-again").addEventListener("click", ()=> goToStep("refleksi"));
+
+/* ============ THEME / SOUND ============ */
+function applyTheme(){
+  document.documentElement.setAttribute("data-theme", state.theme);
+  document.getElementById("btn-theme").textContent = state.theme==="dark" ? "☀️" : "🌙";
+}
+document.getElementById("btn-theme").addEventListener("click", ()=>{
+  state.theme = state.theme==="dark" ? "light" : "dark";
+  applyTheme(); save(); sfxClick();
+});
+function applySound(){ document.getElementById("btn-sound").textContent = state.sound ? "🔊" : "🔇"; }
+document.getElementById("btn-sound").addEventListener("click", ()=>{
+  state.sound = !state.sound; applySound(); save(); if(state.sound) sfxClick();
+});
+
+/* ============ START ============ */
+document.getElementById("btn-start").addEventListener("click", ()=>{
+  const nama = document.getElementById("inp-nama").value.trim();
+  const kelas = document.getElementById("inp-kelas").value.trim();
+  if(!nama){ document.getElementById("inp-nama").focus(); return; }
+  state.nama = nama; state.kelas = kelas;
+  save();
+  document.getElementById("screen-start").style.display = "none";
+  document.getElementById("app").classList.add("active");
+  document.getElementById("brand-sub").textContent = `${nama}${kelas? " · "+kelas:""}`;
+  ensureAudio();
+  goToStep(currentStep);
+});
+
+/* ============ INIT ============ */
+function init(){
+  load();
+  applyTheme(); applySound();
+  buildNav();
+  renderSituations();
+  renderDalil();
+  renderCases();
+  renderScenarioNav(); renderScenario();
+  renderRadar();
+  renderFlip();
+  renderCommit();
+  renderReflect();
+  renderQuiz();
+
+  const origNext = document.querySelectorAll("[data-next='selesai']");
+  origNext.forEach(b=> b.addEventListener("click", renderFinish));
+
+  if(state.nama){
+    document.getElementById("inp-nama").value = state.nama;
+    document.getElementById("inp-kelas").value = state.kelas||"";
+    document.getElementById("screen-start").style.display = "none";
+    document.getElementById("app").classList.add("active");
+    document.getElementById("brand-sub").textContent = `${state.nama}${state.kelas? " · "+state.kelas:""}`;
+    goToStep(currentStep);
+  }
+  updateProgress();
+}
+init();
+
+})();
+</script>
+</body>
+</html>
